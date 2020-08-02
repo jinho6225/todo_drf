@@ -51,6 +51,9 @@
             border: 0;
             width: 15%;
         }
+        .list-container {
+            margin-top: calc(var(--padding)*2);
+        }
         .unorder-list {
             list-style: none;
             padding: 0;
@@ -67,7 +70,9 @@
         .content {
             flex-grow:7;
             padding: var(--padding);
-            width: 80%
+            width: 80%;
+            cursor: pointer;
+            text-decoration: line-through;
         }
         .icon{
             flex-grow:1;
@@ -76,7 +81,13 @@
             display: flex;
             justify-content: space-around;
             align-items: center;
-            width: 15%
+            width: 15%;
+            cursor: pointer;
+            transition: all 1s
+        }
+        .icon :hover{
+            cursor: pointer;
+            transform: scale(1.1);
         }
     </style>
     
@@ -90,30 +101,43 @@
                 <input type="submit" class="submitBtn">
             </form>
         </div>
-        <div>
+        <div class="list-container">
             <ul class="unorder-list">
-                <li class="task-list">
-                    <span class="content">study</span>
-                    <span class="icon">
-                        <i class="far fa-edit"></i>
-                        <i class="far fa-trash-alt"></i>
-                    </span>
-
-                </li>
-                <li class="task-list">
-                    <span class="content"> anim dolor veniam do ea magna incididunt.</span>
-                    <span class="icon">
-                        <i class="far fa-edit"></i>
-                        <i class="far fa-trash-alt"></i>
-                    </span>
-                </li>
+                //dynamic render
             </ul>
         </div>
     </div>
 
 
-    <script>
-        
-    </script>
+<script>
+const LIST_URL = 'http://127.0.0.1:8000/api/task-list/'
+
+function buildList() {
+    const ulList = document.querySelector('.unorder-list')
+    let items = ``
+    fetch(LIST_URL)
+    .then(res => res.json())
+    .then(data => {
+        data.forEach((li, i) => {
+            items += `
+            <li class="task-list">
+                <span class="content">${li.title}</span>
+                <span class="icon">
+                    <i class="far fa-edit"></i>
+                    <i class="far fa-trash-alt"></i>
+                </span>
+            </li>
+            `
+        })
+        ulList.innerHTML = items
+    })
+}
+
+buildList()
+
+
+
+</script>
+
 </body>
 </html>
