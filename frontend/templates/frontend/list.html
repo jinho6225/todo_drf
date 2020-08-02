@@ -21,6 +21,11 @@
             --shadow-color: #777;
 
             --padding: 8px;
+            
+            --micro-font: 10px;
+            --small-font: 12px;
+            --normal-font: 16px;
+            --large-font: 20px
         }
 		body{
             background: #e9ecef;
@@ -30,7 +35,7 @@
             margin-top: 10%;
         }
         .inputBox {
-            padding: calc(var(--padding)*2) calc(var(--padding)*4);
+            padding: calc(var(--padding)*2) calc(var(--padding)*3);
             background-color: var(--white-color);
             box-shadow: 0 10px 6px -6px var(--shadow-color);
         }
@@ -46,6 +51,7 @@
             width: 80%;
         }
         .submitBtn {
+            font-size: var(--normal-font);
             flex-grow: 1;
             background-color: #e0f7fa;
             border: 0;
@@ -62,6 +68,7 @@
             margin: 1% 0 ;
             padding: var(--padding) calc(var(--padding)*4);
             display: flex;
+            align-items: center;
             background-color: var(--white-color);
             box-shadow: 0 5px 3px -3px var(--lightgray-color);
             width: 100%;
@@ -80,7 +87,8 @@
 
         .icon{
             flex-grow:1;
-            padding: var(--padding);
+            font-size: var(--large-font);
+            padding: 0 var(--padding);
             text-align: center;
             display: flex;
             justify-content: space-around;
@@ -93,6 +101,15 @@
             cursor: pointer;
             transform: scale(1.1);
         }
+        .far {
+            padding: var(--padding);
+        }
+
+        @media screen and (max-width: 500px) {
+        .submitBtn {
+            font-size: var(--micro-font);
+        }
+
     </style>
     
 
@@ -131,19 +148,24 @@ function getCookie(name) {
     return cookieValue;
 }
 const csrftoken = getCookie('csrftoken');
-
 const LIST_URL = 'http://127.0.0.1:8000/api/task-list/'
-const CREATE_URL = 'http://127.0.0.1:8000/api/task-create/'
+let ACTIVATE_ITEM = null
 
 addTask()
 buildList()
 
 function addTask() {
+  
     const title = document.querySelector('.inputField')
     const submitBtn = document.querySelector('.submitBtn')
     submitBtn.addEventListener('click', (e) => {
         e.preventDefault()
-        fetch(CREATE_URL, {
+        let URL = `http://127.0.0.1:8000/api/task-create/`
+        if (ACTIVATE_ITEM !== null) {
+            URL = `http://127.0.0.1:8000/api/task-update/${ACTIVATE_ITEM.id}/`
+            ACTIVATE_ITEM = null
+        }
+        fetch(URL, {
             method:'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -155,6 +177,7 @@ function addTask() {
             res.json()})
         .then(data => {
             buildList()
+            document.querySelector('.inputField').value = ''
         })
     })
     
@@ -178,19 +201,30 @@ function buildList() {
                     <i class="far fa-trash-alt"></i>
                 </span>
                 `
-            ulList.prepend(liNode)
+            ulList.appendChild(liNode)
         })
         
         // addEventListner
         for (let i in datas) {
-            const content = document.querySelectorAll('span.content')[i]
+            let item = datas[i]
+            const liList = document.querySelectorAll('.task-list')[i]
+            const content = liList.querySelector('.content')
             content.addEventListener('click', () => {
                 content.classList.toggle('active')
+            })
+
+            const edit = liList.querySelector('.icon > .fa-edit')
+            edit.addEventListener('click', () => {
+                updateTask(item)
             })
         }
     })
 }
 
+function updateTask(item) {
+    ACTIVATE_ITEM = item
+    document.querySelector('.inputField').value = item.title
+}
 
 
 
