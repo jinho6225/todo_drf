@@ -23,8 +23,8 @@
             --padding: 8px;
         }
 		body{
-		  background: #e9ecef;
-		  background: linear-gradient(90deg, #e9ecef 0%, #e5ffff 50%, #e9ecef 100%);
+            background: #e9ecef;
+            background: linear-gradient(90deg, #e9ecef 0%, #e5ffff 50%, #e9ecef 100%);
         }
         .container {
             margin-top: 10%;
@@ -72,8 +72,12 @@
             padding: var(--padding);
             width: 80%;
             cursor: pointer;
+        }
+
+        .content.active {
             text-decoration: line-through;
         }
+
         .icon{
             flex-grow:1;
             padding: var(--padding);
@@ -96,44 +100,98 @@
 <body>
     <div class="container">
         <div class="inputBox">
-            <form action="#" class="inputForm">
-                <input type="text" placeholder="Add task" class="inputField">
-                <input type="submit" class="submitBtn">
+            <form action="#" method="POST" class="inputForm">
+                <input type="text" placeholder="Add task" class="inputField" name="title">
+                <button type="submit" class="submitBtn">Submit</button>
             </form>
         </div>
         <div class="list-container">
             <ul class="unorder-list">
-                //dynamic render
+                <!-- dynamic render -->
             </ul>
         </div>
     </div>
 
 
 <script>
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+
 const LIST_URL = 'http://127.0.0.1:8000/api/task-list/'
+const CREATE_URL = 'http://127.0.0.1:8000/api/task-create/'
+
+addTask()
+buildList()
+
+function addTask() {
+    const title = document.querySelector('.inputField')
+    const submitBtn = document.querySelector('.submitBtn')
+    submitBtn.addEventListener('click', (e) => {
+        e.preventDefault()
+        fetch(CREATE_URL, {
+            method:'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                "X-CSRFToken": csrftoken
+                },
+            body: JSON.stringify({'title':title.value})
+        })
+        .then(res => {
+            res.json()})
+        .then(data => {
+            buildList()
+        })
+    })
+    
+}
+
 
 function buildList() {
-    const ulList = document.querySelector('.unorder-list')
+    let ulList = document.querySelector('.unorder-list')
+        ulList.innerHTML = ``
     let items = ``
     fetch(LIST_URL)
     .then(res => res.json())
-    .then(data => {
-        data.forEach((li, i) => {
-            items += `
-            <li class="task-list">
+    .then(datas => {
+        datas.forEach((li, i) => {
+            var liNode = document.createElement("LI");
+            liNode.classList.add('task-list')
+            liNode.innerHTML = `
                 <span class="content">${li.title}</span>
                 <span class="icon">
                     <i class="far fa-edit"></i>
                     <i class="far fa-trash-alt"></i>
                 </span>
-            </li>
-            `
+                `
+            ulList.prepend(liNode)
         })
-        ulList.innerHTML = items
+        
+        // addEventListner
+        for (let i in datas) {
+            const content = document.querySelectorAll('span.content')[i]
+            content.addEventListener('click', () => {
+                content.classList.toggle('active')
+            })
+        }
     })
 }
 
-buildList()
+
 
 
 
