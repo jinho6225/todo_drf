@@ -34,6 +34,10 @@
         .container {
             margin-top: 10%;
         }
+        .header {
+            text-align: center;
+            padding: var(--padding);
+        }
         .inputBox {
             padding: calc(var(--padding)*2) calc(var(--padding)*3);
             background-color: var(--white-color);
@@ -115,7 +119,12 @@
 
 </head>
 <body>
+
     <div class="container">
+        <header class="header">
+        <h2>Todo List</h2>
+        <h4>(Django-REST-framework + Vanilla JS)</h4>
+        </header>
         <div class="inputBox">
             <form action="#" method="POST" class="inputForm">
                 <input type="text" placeholder="Add task" class="inputField" name="title">
@@ -217,6 +226,11 @@ function buildList() {
             edit.addEventListener('click', () => {
                 updateTask(item)
             })
+
+            const trash = liList.querySelector('.icon > .fa-trash-alt')
+            trash.addEventListener('click', () => {
+                deleteTask(item)
+            })
         }
     })
 }
@@ -226,6 +240,21 @@ function updateTask(item) {
     document.querySelector('.inputField').value = item.title
 }
 
+function deleteTask(item) {
+    let URL = `http://127.0.0.1:8000/api/task-delete/${item.id}/`
+    fetch(URL, {
+            method:'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                "X-CSRFToken": csrftoken
+                },
+        })
+        .then(res => {
+            res.json()})
+        .then(data => {
+            buildList()
+        })
+}
 
 
 
