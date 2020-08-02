@@ -15,6 +15,13 @@
         * {
             font-family: "Montserrat", sans-serif;
         }
+        :root {
+            --lightgray-color: #eceff1;
+            --white-color: #FFF;
+            --shadow-color: #777;
+
+            --padding: 8px;
+        }
 		body{
 		  background: #e9ecef;
 		  background: linear-gradient(90deg, #e9ecef 0%, #e5ffff 50%, #e9ecef 100%);
@@ -23,9 +30,9 @@
             margin-top: 10%;
         }
         .inputBox {
-            padding: 5%;
-            background-color: #FFF;
-            box-shadow: 0 10px 6px -6px #777;
+            padding: calc(var(--padding)*2) calc(var(--padding)*4);
+            background-color: var(--white-color);
+            box-shadow: 0 10px 6px -6px var(--shadow-color);
         }
         
         .inputForm {
@@ -34,13 +41,15 @@
         }
         .inputField {
             flex-grow: 7;
-            border: 1px solid lightgray;
-            padding: 1% 3%
+            border: 1px solid var(--lightgray-color);
+            padding: var(--padding);
+            width: 80%;
         }
         .submitBtn {
             flex-grow: 1;
             background-color: #e0f7fa;
             border: 0;
+            width: 15%;
         }
         .unorder-list {
             list-style: none;
@@ -48,21 +57,21 @@
         }
         .task-list {
             margin: 1% 0 ;
-            padding: 1% 5%;
+            padding: var(--padding) calc(var(--padding)*4);
             display: flex;
-            background-color: #FFF;
-            box-shadow: 0 5px 3px -3px lightgray;
+            background-color: var(--white-color);
+            box-shadow: 0 5px 3px -3px var(--lightgray-color);
             width: 100%;
         }
 
         .content {
             flex-grow:7;
-            padding: 1%;
+            padding: var(--padding);
             width: 80%
         }
         .icon{
             flex-grow:1;
-            padding: 1%;
+            padding: var(--padding);
             text-align: center;
             display: flex;
             justify-content: space-around;
