@@ -159,6 +159,7 @@ function getCookie(name) {
 const csrftoken = getCookie('csrftoken');
 const LIST_URL = 'http://127.0.0.1:8000/api/task-list/'
 let ACTIVATE_ITEM = null
+let DONE = null
 
 addTask()
 buildList()
@@ -204,7 +205,7 @@ function buildList() {
             var liNode = document.createElement("LI");
             liNode.classList.add('task-list')
             liNode.innerHTML = `
-                <span class="content">${li.title}</span>
+                <span class="content ${li.completed ? 'active' : ''}">${li.title}</span>
                 <span class="icon">
                     <i class="far fa-edit"></i>
                     <i class="far fa-trash-alt"></i>
@@ -219,7 +220,7 @@ function buildList() {
             const liList = document.querySelectorAll('.task-list')[i]
             const content = liList.querySelector('.content')
             content.addEventListener('click', () => {
-                content.classList.toggle('active')
+                lineThrough(item)
             })
 
             const edit = liList.querySelector('.icon > .fa-edit')
@@ -233,6 +234,26 @@ function buildList() {
             })
         }
     })
+}
+
+function lineThrough(item) {
+    item.completed = !item.completed
+    let URL = `http://127.0.0.1:8000/api/task-update/${item.id}/`
+    fetch(URL, {
+            method:'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                "X-CSRFToken": csrftoken
+                },
+            body: JSON.stringify({
+                'title':item.title,
+                'completed': item.completed
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            buildList()
+        })
 }
 
 function updateTask(item) {
