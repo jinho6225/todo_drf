@@ -161,9 +161,6 @@ const LIST_URL = 'http://127.0.0.1:8000/api/task-list/'
 let ACTIVATE_ITEM = null
 let DONE = null
 
-addTask()
-buildList()
-
 function addTask() {
   
     const title = document.querySelector('.inputField')
@@ -277,7 +274,8 @@ function deleteTask(item) {
         })
 }
 
-
+addTask()
+buildList()
 
 </script>
 
