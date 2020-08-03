@@ -240,7 +240,9 @@ function buildList() {
 
 function lineThrough(item) {
     item.completed = !item.completed
-    let URL = `http://127.0.0.1:8000/api/task-update/${item.id}/`
+    {% comment %} let URL = `http://127.0.0.1:8000/api/task-update/${item.id}/` {% endcomment %}
+    let URL = `http://jinho6225.pythonanywhere.com/api/task-update/${item.id}/`
+
     fetch(URL, {
             method:'POST',
             headers: {
