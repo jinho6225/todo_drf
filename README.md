@@ -5,7 +5,7 @@
 > python_Django(REST API) + Vanilla JavaScript todo ap
 
 ## Live Demo
-Try the application live at [http://jinho6225.pythonanywhere.com/](http://jinho6225.pythonanywhere.com/)
+Try the application live at [https://jinho6225.pythonanywhere.com/](https://jinho6225.pythonanywhere.com/)
 
 ## Technologies Used
 - Vanilla JavaScript
