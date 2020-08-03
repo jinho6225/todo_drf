@@ -157,7 +157,9 @@ function getCookie(name) {
     return cookieValue;
 }
 const csrftoken = getCookie('csrftoken');
-const LIST_URL = 'http://127.0.0.1:8000/api/task-list/'
+{% comment %} const LIST_URL = 'http://127.0.0.1:8000/api/task-list/' {% endcomment %}
+const LIST_URL = 'http://jinho6225.pythonanywhere.com/api/task-list/'
+
 let ACTIVATE_ITEM = null
 let DONE = null
 
@@ -167,9 +169,12 @@ function addTask() {
     const submitBtn = document.querySelector('.submitBtn')
     submitBtn.addEventListener('click', (e) => {
         e.preventDefault()
-        let URL = `http://127.0.0.1:8000/api/task-create/`
+        {% comment %} let URL = `http://127.0.0.1:8000/api/task-create/` {% endcomment %}
+        let URL = `http://jinho6225.pythonanywhere.com/api/task-create/`
+
         if (ACTIVATE_ITEM !== null) {
-            URL = `http://127.0.0.1:8000/api/task-update/${ACTIVATE_ITEM.id}/`
+            {% comment %} URL = `http://127.0.0.1:8000/api/task-update/${ACTIVATE_ITEM.id}/` {% endcomment %}
+            URL = `http://jinho6225.pythonanywhere.com/api/task-update/${ACTIVATE_ITEM.id}/`
             ACTIVATE_ITEM = null
         }
         fetch(URL, {
@@ -259,7 +264,9 @@ function updateTask(item) {
 }
 
 function deleteTask(item) {
-    let URL = `http://127.0.0.1:8000/api/task-delete/${item.id}/`
+    {% comment %} let URL = `http://127.0.0.1:8000/api/task-delete/${item.id}/` {% endcomment %}
+    let URL = `http://jinho6225.pythonanywhere.com/api/task-delete/${item.id}/`
+
     fetch(URL, {
             method:'DELETE',
             headers: {
