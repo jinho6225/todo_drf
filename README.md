@@ -2,7 +2,7 @@
 
 ## Django REST framework + Vanilla JavaScript todos
 
-> python_Django(REST API) + Vanilla JavaScript todo ap
+> python_Django(REST API) + Vanilla JavaScript todo app
 
 ## Live Demo
 Try the application live at [https://jinho6225.pythonanywhere.com/](https://jinho6225.pythonanywhere.com/)
