@@ -9,7 +9,7 @@ Try the application live at [https://jinho6225.pythonanywhere.com/](https://jinh
 
 ## Technologies Used
 - Vanilla JavaScript
-- Variable CSS
+- CSS Variables 
 - HTML
 - Python
 - Django
